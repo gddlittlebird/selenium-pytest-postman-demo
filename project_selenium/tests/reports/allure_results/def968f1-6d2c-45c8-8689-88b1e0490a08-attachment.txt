@@ -1,0 +1,9 @@
+ERROR    core.browser_manager:browser_manager.py:111 浏览器启动失败:'BrowserManager' object has no attribute 'options'
+Traceback (most recent call last):
+  File "D:\project_selenium_improve\core\browser_manager.py", line 82, in start_browser
+    options = self._setup_options()
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project_selenium_improve\core\browser_manager.py", line 52, in _setup_options
+    self.options.add_argument("--start-maximized")
+    ^^^^^^^^^^^^
+AttributeError: 'BrowserManager' object has no attribute 'options'

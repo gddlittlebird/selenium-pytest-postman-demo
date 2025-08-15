@@ -1,0 +1,2 @@
+[32mINFO    [0m utils.config_manager:config_manager.py:136 日志系统已初始化
+[32mINFO    [0m utils.config_manager:config_manager.py:136 配置文件已加载:D:\project_selenium_improve\config\config.ini

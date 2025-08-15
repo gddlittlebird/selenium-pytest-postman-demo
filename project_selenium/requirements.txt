@@ -1,0 +1,9 @@
+pytest
+pytest-html
+pytest-xdist
+pytest-ordering
+pytest-rerunfailures
+allure
+allure-pytest
+selenium
+webdriver-manager

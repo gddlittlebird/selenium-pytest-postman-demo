@@ -1,0 +1,11 @@
+pytest
+requests
+pyyaml
+jsonschema
+python-dotenv
+pytest-html
+pytest-xdist
+
+#安装代码
+#python -m pip install -r requirements.txt
+

@@ -1,0 +1,26 @@
+INFO     utils.config_manager:config_manager.py:136 日志系统已初始化
+INFO     utils.config_manager:config_manager.py:136 配置文件已加载:D:\project_selenium_improve\config\config.ini
+ERROR    core.base_page:order_page.py:88 选择客户失败: Message: 
+Stacktrace:
+	GetHandleVerifier [0x0x81fd33+62915]
+	GetHandleVerifier [0x0x81fd74+62980]
+	(No symbol) [0x0x653e13]
+	(No symbol) [0x0x69c89e]
+	(No symbol) [0x0x69cc3b]
+	(No symbol) [0x0x6e4ec2]
+	(No symbol) [0x0x6c1424]
+	(No symbol) [0x0x6e26ea]
+	(No symbol) [0x0x6c11d6]
+	(No symbol) [0x0x690833]
+	(No symbol) [0x0x6916a4]
+	GetHandleVerifier [0x0xa88d23+2590131]
+	GetHandleVerifier [0x0xa83f6a+2570234]
+	GetHandleVerifier [0x0x8459ea+217722]
+	GetHandleVerifier [0x0x836058+153832]
+	GetHandleVerifier [0x0x83c4bd+179533]
+	GetHandleVerifier [0x0x827738+94152]
+	GetHandleVerifier [0x0x8278c2+94546]
+	GetHandleVerifier [0x0x812bda+9322]
+	BaseThreadInitThunk [0x0x75fb5d49+25]
+	RtlInitializeExceptionChain [0x0x7777d1ab+107]
+	RtlGetAppContainerNamedObjectPath [0x0x7777d131+561]

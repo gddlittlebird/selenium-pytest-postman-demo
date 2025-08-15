@@ -1,0 +1,28 @@
+INFO     utils.config_manager:config_manager.py:136 日志系统已初始化
+INFO     utils.config_manager:config_manager.py:136 配置文件已加载:D:\project_selenium_improve\config\config.ini
+WARNING  core.base_page:base_page.py:115 Element not visible:('class name', 'login-button') - Error:Message: 
+Stacktrace:
+	GetHandleVerifier [0x0x8bfd33+62915]
+	GetHandleVerifier [0x0x8bfd74+62980]
+	(No symbol) [0x0x6f3e13]
+	(No symbol) [0x0x73c89e]
+	(No symbol) [0x0x73cc3b]
+	(No symbol) [0x0x784ec2]
+	(No symbol) [0x0x761424]
+	(No symbol) [0x0x7826ea]
+	(No symbol) [0x0x7611d6]
+	(No symbol) [0x0x730833]
+	(No symbol) [0x0x7316a4]
+	GetHandleVerifier [0x0xb28d23+2590131]
+	GetHandleVerifier [0x0xb23f6a+2570234]
+	GetHandleVerifier [0x0x8e59ea+217722]
+	GetHandleVerifier [0x0x8d6058+153832]
+	GetHandleVerifier [0x0x8dc4bd+179533]
+	GetHandleVerifier [0x0x8c7738+94152]
+	GetHandleVerifier [0x0x8c78c2+94546]
+	GetHandleVerifier [0x0x8b2bda+9322]
+	BaseThreadInitThunk [0x0x75fb5d49+25]
+	RtlInitializeExceptionChain [0x0x7777d1ab+107]
+	RtlGetAppContainerNamedObjectPath [0x0x7777d131+561]
+
+WARNING  core.base_page:base_page.py:115 Element not visible:欢迎进入文案 - Error:selenium.webdriver.remote.webdriver.WebDriver.find_element() argument after * must be an iterable, not WebElement

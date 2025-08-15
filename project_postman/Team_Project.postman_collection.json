@@ -1,0 +1,537 @@
+{
+	"info": {
+		"_postman_id": "a6192237-7e3f-4d6a-9c82-65c629f24d77",
+		"name": "Team_Project",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "43791316"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// 仅在状态码为 200 时执行后续操作\r",
+							"if (pm.response.code === 200) {\r",
+							"    try {\r",
+							"        // 解析 JSON 响应\r",
+							"        const responseData = pm.response.json();\r",
+							"        \r",
+							"        // 提取并存储 loginKey\r",
+							"        if (responseData.data?.loginKey) { // 可选链操作符容错\r",
+							"            const loginKey = responseData.data.loginKey;\r",
+							"            pm.environment.set(\"loginKey\", loginKey);\r",
+							"            console.log(\"loginKey 已保存:\", loginKey);\r",
+							"        } else {\r",
+							"            console.error(\"loginKey 未找到\", responseData);\r",
+							"        }\r",
+							"    } catch (e) {\r",
+							"        console.error(\"响应数据解析失败:\", e.message);\r",
+							"    }\r",
+							"} else {\r",
+							"    console.error(\"请求失败，状态码:\", pm.response.code);\r",
+							"}\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							" console.log(\"{{ip}}\");\r",
+							"\r",
+							"console.log(\"Current iteration data:\", pm.iterationData.toObject());"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"userName\": \"alltester_勿动\",\r\n   \"password\": \"iRBWaIBzxdkGdzCEm26mgw==\"\r\n}\r\n\r\n// {\r\n//    \"userName\": \"{{userName}}\",\r\n//    \"password\": \"{{password}}\"\r\n// }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{ip}}/admin/admin-user/login",
+					"protocol": "http",
+					"host": [
+						"{{ip}}"
+					],
+					"path": [
+						"admin",
+						"admin-user",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create_staff_info",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const expectedUserName = pm.environment.get(\"userName\");\r",
+							"const expectedUserNo = pm.environment.get(\"userNo\");\r",
+							"\r",
+							"\r",
+							"// 验证嵌套数据（动态匹配 Pre-request 生成的变量）\r",
+							"pm.test(\"data is valid\", () => {\r",
+							"    const adminUser = pm.response.json().data.adminUser;\r",
+							"    \r",
+							"    // 1. 验证 id 存在且为数字（不固定值）\r",
+							"    pm.expect(adminUser).to.have.property(\"id\").that.is.a(\"number\");\r",
+							"    \r",
+							"    // 2. 验证 userName 和 userNo 与 Pre-request 生成的动态值一致\r",
+							"    pm.expect(adminUser.userName).to.eql(expectedUserName);\r",
+							"    pm.expect(adminUser.userNo).to.eql(expectedUserNo);\r",
+							"\r",
+							"    //3. 获取id 和 userNo\r",
+							"    const responseBody = pm.response.text();\r",
+							"    const jsonData = JSON.parse(responseBody);\r",
+							"\r",
+							"    let id = jsonData.data.adminUser.id;\r",
+							"    let userNo = jsonData.data.adminUser.userNo;\r",
+							"    pm.environment.set(\"staff_id\", id);\r",
+							"    pm.environment.set(\"userNo\", userNo);\r",
+							"\r",
+							"    \r",
+							"});\r",
+							"\r",
+							"\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// 生成带日期和随机数的userName/userNo（例如：AAA20240415_123）\r",
+							"const prefix = \"JK\";\r",
+							"const datePart = new Date().toISOString().slice(0, 10).replace(/-/g, \"\"); // 格式：YYYYMMDD\r",
+							"const randomSuffix = Math.floor(Math.random() * 1000); // 0-999的随机数\r",
+							"const dynamicValue = `${prefix}${datePart}_${randomSuffix}`;\r",
+							"\r",
+							"// 生成11位随机手机号（以1开头）\r",
+							"const prefixes = [\"130\", \"159\", \"186\"];\r",
+							"const prefixNum = prefixes[Math.floor(Math.random() * prefixes.length)];\r",
+							"const phoneNumber = prefixNum + Math.floor(10000000 + Math.random() * 90000000);\r",
+							"\r",
+							"\r",
+							"// 设置环境变量或局部变量\r",
+							"pm.environment.set(\"userName\", dynamicValue);\r",
+							"pm.environment.set(\"userNo\", dynamicValue);\r",
+							"pm.environment.set(\"phoneNumber\", phoneNumber);\r",
+							"\r",
+							"// 控制台打印验证（可选）\r",
+							"console.log(\"userName/userNo:\", dynamicValue, \"phone:\", phoneNumber);\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "loginKey",
+						"value": "{{loginKey}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userName\": \"{{userName}}\",\r\n    \"departmentId\": 4,\r\n    \"userNo\": \"{{userNo}}\",\r\n    \"status\": 1,\r\n    \"userIds\": [],\r\n    \"roleIds\": [1],\r\n    \"positionId\": 1,\r\n    \"phoneNumber\": \"{{phoneNumber}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{ip}}/admin/admin-user/create",
+					"protocol": "http",
+					"host": [
+						"{{ip}}"
+					],
+					"path": [
+						"admin",
+						"admin-user",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Search_staff_info",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"search 返回值校验并提取用户信息用于 update\", () => {\r",
+							"    const jsonData = pm.response.json();\r",
+							"    const requestBody = JSON.parse(pm.request.body.raw);\r",
+							"\r",
+							"    // 1. 验证最外层 code\r",
+							"    pm.expect(jsonData.code).to.eql(200);\r",
+							"\r",
+							"    // 2. 验证最外层 message\r",
+							"    pm.expect(jsonData.message).to.eql(\"请求成功\");\r",
+							"\r",
+							"    const rows = jsonData.data?.rows || [];\r",
+							"    pm.expect(rows.length).to.be.above(0); // 至少有一条结果\r",
+							"\r",
+							"    // 3. 验证返回的 userName 与请求的一致\r",
+							"    rows.forEach(row => {\r",
+							"        pm.expect(row.userName).to.eql(requestBody.userName);\r",
+							"    });\r",
+							"\r",
+							"    // 4. 提取 update 接口需要的字段（不覆盖 create 已设置的字段）\r",
+							"    const userData = rows[0]; // 假设只会查到一条\r",
+							"    pm.environment.set(\"userId\", userData.id);\r",
+							"    pm.environment.set(\"departmentId\", userData.departmentId);\r",
+							"    pm.environment.set(\"status\", userData.status);\r",
+							"    pm.environment.set(\"positionId\", userData.positionId);\r",
+							"    pm.environment.set(\"phoneNumber\", userData.phoneNumber);\r",
+							"    pm.environment.set(\"noLiabilityEarnings\", userData.noLiabilityEarnings);\r",
+							"\r",
+							"    console.log(\"userId:\", pm.environment.get(\"userId\"));\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "loginKey",
+						"value": "{{loginKey}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"pageNumber\": 1,\r\n  \"pageSize\": 100,\r\n  \"userName\": \"{{userName}}\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{ip}}/admin/admin-user/getAdminUserList",
+					"protocol": "http",
+					"host": [
+						"{{ip}}"
+					],
+					"path": [
+						"admin",
+						"admin-user",
+						"getAdminUserList"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update_staff_info",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// 获取 Pre-request 脚本中设置的有责毛利\r",
+							"const expectedEarnings = pm.variables.get(\"noLiabilityEarnings\");\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"//Modify the Responsible gross profit\r",
+							"\r",
+							"// 生成 2000 到 5000 之间的随机整数\r",
+							"const min = 2000;\r",
+							"const max = 5000;\r",
+							"const randomEarnings = Math.floor(Math.random() * (max - min + 1)) + min;\r",
+							"console.log(randomEarnings);\r",
+							"\r",
+							"// 局部变量\r",
+							"pm.variables.set(\"noLiabilityEarnings\", randomEarnings);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "loginKey",
+						"value": "{{loginKey}}",
+						"type": "text"
+					},
+					{
+						"key": "x-validate-response",
+						"value": "true",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": {{userId}},\r\n    \"userName\": \"{{userName}}\",\r\n    \"departmentId\": {{departmentId}},\r\n    \"userNo\": \"{{userNo}}\",\r\n    \"status\": {{status}},\r\n    \"userIds\": [],\r\n    \"isAllowAll\": 0,\r\n    \"roleIds\": [1],\r\n    \"positionId\": {{positionId}},\r\n    \"isAllAffiliate\": 0,\r\n    \"affiliateIds\": [],\r\n    \"phoneNumber\": \"{{phoneNumber}}\",\r\n    \"noLiabilityEarnings\": {{noLiabilityEarnings}}\r\n}\r\n\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{ip}}/admin/admin-user/update",
+					"protocol": "http",
+					"host": [
+						"{{ip}}"
+					],
+					"path": [
+						"admin",
+						"admin-user",
+						"update"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete_staff",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"pm.test(\"外层code为200\", function () {\r",
+							"    pm.expect(pm.response.json().code).to.eql(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"外层message正确\", function () {\r",
+							"    pm.expect(pm.response.json().message).to.eql(\"请求成功\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"data 内的 code 为 200\", function () {\r",
+							"    pm.expect(pm.response.json().data.code).to.eql(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"data 内的 message 为 OK\", function () {\r",
+							"    pm.expect(pm.response.json().data.message).to.eql(\"OK\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"data 内的 success 为 true\", function () {\r",
+							"    pm.expect(pm.response.json().data.success).to.be.true;\r",
+							"});\r",
+							"\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "loginKey",
+						"value": "{{loginKey}}",
+						"type": "text"
+					},
+					{
+						"key": "x-validate-response",
+						"value": "true",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"id\": {{staff_id}}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{ip}}/admin/admin-user/del",
+					"protocol": "http",
+					"host": [
+						"{{ip}}"
+					],
+					"path": [
+						"admin",
+						"admin-user",
+						"del"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Logout",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-validate-response",
+						"value": "true",
+						"type": "text"
+					},
+					{
+						"key": "loginKey",
+						"value": "{{loginKey}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://{{ip}}/admin/admin-user/logOut",
+					"protocol": "http",
+					"host": [
+						"{{ip}}"
+					],
+					"path": [
+						"admin",
+						"admin-user",
+						"logOut"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					"//Response\r",
+					"//\"code\": 200,\r",
+					"//\"message\": \"请求成功\",\r",
+					"\r",
+					"//To check the result\r",
+					"//Common function\r",
+					"pm.test(\"Status code is 200\", function () {\r",
+					"    pm.response.to.have.status(200);\r",
+					"});\r",
+					"\r",
+					"pm.test(\"message is correct\", function () {\r",
+					"    const jsonData = pm.response.json();\r",
+					"    pm.expect(jsonData.message).to.eql(\"请求成功\");\r",
+					"\r",
+					"});\r",
+					"\r",
+					"\r",
+					"//-----------------------------------------------\r",
+					"\r",
+					"function validateCommonResponse() {\r",
+					"    pm.test(\"Common function -- Data is valid\", () => {\r",
+					"        const responseData = pm.response.json().data;\r",
+					"        pm.expect(responseData.code).to.eql(200);\r",
+					"        pm.expect(responseData.message).to.eql(\"OK\");\r",
+					"        pm.expect(responseData.success).to.be.true;\r",
+					"    });\r",
+					"}\r",
+					"\r",
+					"//if (pm.variables.get(\"enableCommonValidation\") === \"true\") {\r",
+					"//  validateCommonResponse();\r",
+					"//}\r",
+					"\r",
+					"// 通过请求的标签（或自定义变量）动态调用\r",
+					"if (pm.request.headers.get('x-validate-response') === 'true') {\r",
+					"    validateCommonResponse();\r",
+					"}\r",
+					""
+				]
+			}
+		}
+	]
+}

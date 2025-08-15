@@ -1,0 +1,65 @@
+[32mINFO    [0m utils.config_manager:config_manager.py:136 日志系统已初始化
+[32mINFO    [0m utils.config_manager:config_manager.py:136 配置文件已加载:D:\project_selenium_improve\config\config.ini
+[1m[31mERROR   [0m core.browser_manager:browser_manager.py:108 浏览器启动失败:Message: session not created: probably user data directory is already in use, please specify a unique value for --user-data-dir argument, or don't use --user-data-dir
+Stacktrace:
+	GetHandleVerifier [0x0xccfd23+62915]
+	GetHandleVerifier [0x0xccfd64+62980]
+	(No symbol) [0x0xb03e13]
+	(No symbol) [0x0xb378e8]
+	(No symbol) [0x0xb331e9]
+	(No symbol) [0x0xb7ce32]
+	(No symbol) [0x0xb7c74a]
+	(No symbol) [0x0xb711d6]
+	(No symbol) [0x0xb40833]
+	(No symbol) [0x0xb416a4]
+	GetHandleVerifier [0x0xf38d13+2590131]
+	GetHandleVerifier [0x0xf33f5a+2570234]
+	GetHandleVerifier [0x0xcf59da+217722]
+	GetHandleVerifier [0x0xce6048+153832]
+	GetHandleVerifier [0x0xcec4ad+179533]
+	GetHandleVerifier [0x0xcd7728+94152]
+	GetHandleVerifier [0x0xcd78b2+94546]
+	GetHandleVerifier [0x0xcc2bca+9322]
+	BaseThreadInitThunk [0x0x75fb5d49+25]
+	RtlInitializeExceptionChain [0x0x7777d1ab+107]
+	RtlGetAppContainerNamedObjectPath [0x0x7777d131+561]
+Traceback (most recent call last):
+  File "D:\project_selenium_improve\core\browser_manager.py", line 90, in start_browser
+    driver = webdriver.Chrome(service=service, options=self.options)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Python312-32\Lib\site-packages\selenium\webdriver\chrome\webdriver.py", line 45, in __init__
+    super().__init__(
+  File "D:\Python312-32\Lib\site-packages\selenium\webdriver\chromium\webdriver.py", line 66, in __init__
+    super().__init__(command_executor=executor, options=options)
+  File "D:\Python312-32\Lib\site-packages\selenium\webdriver\remote\webdriver.py", line 250, in __init__
+    self.start_session(capabilities)
+  File "D:\Python312-32\Lib\site-packages\selenium\webdriver\remote\webdriver.py", line 342, in start_session
+    response = self.execute(Command.NEW_SESSION, caps)["value"]
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Python312-32\Lib\site-packages\selenium\webdriver\remote\webdriver.py", line 429, in execute
+    self.error_handler.check_response(response)
+  File "D:\Python312-32\Lib\site-packages\selenium\webdriver\remote\errorhandler.py", line 232, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.SessionNotCreatedException: Message: session not created: probably user data directory is already in use, please specify a unique value for --user-data-dir argument, or don't use --user-data-dir
+Stacktrace:
+	GetHandleVerifier [0x0xccfd23+62915]
+	GetHandleVerifier [0x0xccfd64+62980]
+	(No symbol) [0x0xb03e13]
+	(No symbol) [0x0xb378e8]
+	(No symbol) [0x0xb331e9]
+	(No symbol) [0x0xb7ce32]
+	(No symbol) [0x0xb7c74a]
+	(No symbol) [0x0xb711d6]
+	(No symbol) [0x0xb40833]
+	(No symbol) [0x0xb416a4]
+	GetHandleVerifier [0x0xf38d13+2590131]
+	GetHandleVerifier [0x0xf33f5a+2570234]
+	GetHandleVerifier [0x0xcf59da+217722]
+	GetHandleVerifier [0x0xce6048+153832]
+	GetHandleVerifier [0x0xcec4ad+179533]
+	GetHandleVerifier [0x0xcd7728+94152]
+	GetHandleVerifier [0x0xcd78b2+94546]
+	GetHandleVerifier [0x0xcc2bca+9322]
+	BaseThreadInitThunk [0x0x75fb5d49+25]
+	RtlInitializeExceptionChain [0x0x7777d1ab+107]
+	RtlGetAppContainerNamedObjectPath [0x0x7777d131+561]

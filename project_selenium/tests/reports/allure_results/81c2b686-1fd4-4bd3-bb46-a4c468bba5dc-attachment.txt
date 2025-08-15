@@ -1,0 +1,11 @@
+INFO     utils.config_manager:config_manager.py:136 日志系统已初始化
+INFO     utils.config_manager:config_manager.py:136 配置文件已加载:D:\project_selenium_improve\config\config.ini
+ERROR    core.browser_manager:browser_manager.py:108 浏览器启动失败:'BrowserManager' object has no attribute 'options'
+Traceback (most recent call last):
+  File "D:\project_selenium_improve\core\browser_manager.py", line 82, in start_browser
+    self.options = self._setup_options()
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project_selenium_improve\core\browser_manager.py", line 52, in _setup_options
+    self.options.add_argument("--start-maximized")
+    ^^^^^^^^^^^^
+AttributeError: 'BrowserManager' object has no attribute 'options'

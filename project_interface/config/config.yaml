@@ -1,0 +1,31 @@
+# 支持多个环境，根据运行时参数选择
+env: dev
+
+base_url:
+  dev: "https://admin-test.tmexp.com"
+
+accounts:
+  - userName: "勿动_IFace_测试"
+    password: "iRBWaIBzxdkGdzCEm26mgw=="
+    expected_login_code: 200
+    expected_data_message: OK
+  - userName: "test0623_1"
+    password: "iRBWaIBzxdkGdzCEm26mgw=="
+    expected_login_code: 200
+    expected_data_message: "账号或密码错误"
+  - userName: "tester_B_勿动"
+    password: "Xkicngbj0HHAx+sB8nXylg=="
+    expected_login_code: 200
+    expected_data_message: "账号或密码错误"
+
+valid_accounts:
+  - userName: "alltester_勿动"
+    password: "iRBWaIBzxdkGdzCEm26mgw=="
+    order_index: 0
+    expected_login_code: 200
+    expected_data_message: OK
+  - userName: "tester_B_勿动"
+    password: "iRBWaIBzxdkGdzCEm26mgw=="
+    order_index: 0
+    expected_login_code: 200
+    expected_data_message: OK

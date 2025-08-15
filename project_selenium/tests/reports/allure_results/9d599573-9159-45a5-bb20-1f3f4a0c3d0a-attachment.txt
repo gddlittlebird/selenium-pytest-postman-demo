@@ -1,0 +1,3 @@
+INFO     utils.config_manager:config_manager.py:136 日志系统已初始化
+INFO     utils.config_manager:config_manager.py:136 配置文件已加载:D:\project_selenium_improve\config\config.ini
+WARNING  core.base_page:base_page.py:115 Element not visible:进入首页 - Error:selenium.webdriver.remote.webdriver.WebDriver.find_element() argument after * must be an iterable, not WebElement
