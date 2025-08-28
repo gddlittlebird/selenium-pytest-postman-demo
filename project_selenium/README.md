@@ -13,11 +13,10 @@ project_selenium/
 ├── pages/                     # 页面对象模型（POM）
 │   ├── login_page.py
 │   └── order_page.py
-├── tests/                     # 改名更符合 pytest 默认规则
-│   ├── test_login.py
-│   └── test_order.py
+├── tests/                     
+│   ├── test_login.py          # 登录
+│   └── test_order.py          # 下单
 │   └── test_login_performance.py  #测试不同的账户同时登录
-│   └── csv files              # 数据准备
 │   └── csv files              # 数据准备
 ├── pytest.ini 				   # 
 ├── reports/                   # 测试报告存放目录（html/xml等）
