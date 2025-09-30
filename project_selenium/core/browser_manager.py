@@ -31,17 +31,23 @@ class BrowserManager:
         self.user_data_dir = None
 
         #配置文件中是headless = False，需要转换
-        self.headless_mode = ConfigManager.get_from_config("browser", "headless")
+        raw_headless = ConfigManager.get_from_config("browser", "headless") or False
+        self.headless_mode = False if raw_headless == "False" else True
+
 
     def _create_user_data_dir(self):
         """根据模式创建用户数据目录"""
-        if self.parallel:
-            # 每个实例用唯一目录
-            self.user_data_dir = tempfile.mkdtemp(prefix=f"chrome_profile_{uuid.uuid4().hex}_")
-        else:
-            # 固定目录，模拟人工
-            self.user_data_dir = os.path.expanduser(os.path.join("~", ".selenium_chrome_profile"))
-            os.makedirs(self.user_data_dir, exist_ok=True)
+        try:
+            if self.parallel:
+                # 每个实例用唯一目录
+                self.user_data_dir = tempfile.mkdtemp(prefix=f"chrome_profile_{uuid.uuid4().hex}_")
+            else:
+                # 固定目录，模拟人工
+                self.user_data_dir = os.path.expanduser(os.path.join("~", ".selenium_chrome_profile"))
+                os.makedirs(self.user_data_dir, exist_ok=True)
+        except Exception as e:
+            self.logger.error(f"创建用户数据目录失败: {e}",exc_info=True)
+            raise RuntimeError(f"创建用户数据目录失败: {str(e)}")
 
     def _setup_options(self):
         """配置浏览器选项"""
@@ -79,7 +85,8 @@ class BrowserManager:
         """启动浏览器"""
         try:
             self._create_user_data_dir()
-            self.options = self._setup_options()
+            options = self._setup_options()
+
             self.logger.info(f"启动Chrome(自我驱动管理),用户数据目录:{self.user_data_dir}")
             print(f"启动Chrome,用户数据目录:{self.user_data_dir}")
             # print(f"无头模式状态: {self.headless_mode}")
@@ -87,7 +94,7 @@ class BrowserManager:
             # 启动Chrome浏览器服务
             service = ChromeService(executable_path=ChromeDriverManager().install())
             # 创建 webDriver 实例
-            driver = webdriver.Chrome(service=service, options=self.options)
+            driver = webdriver.Chrome(service=service, options=options)
 
             # 注入 JS 脚本，将 navigator.webdriver 设置为 undefined
             driver.execute_cdp_cmd("Page.addScriptToEvaluateOnNewDocument", {
@@ -107,7 +114,7 @@ class BrowserManager:
         except Exception as e:
             self.logger.error(f"浏览器启动失败:{e}",exc_info=True)
             self._cleanup_user_data_dir()
-            raise RuntimeError(f"浏览器启动失败: {str(e)}")
+            raise RuntimeError(f"浏览器启动失败: {e}")
 
     def close_browser(self):
         """关闭浏览器并清理目录"""
@@ -123,9 +130,9 @@ class BrowserManager:
         """仅在并发模式下删除临时目录"""
         if self.parallel and self.user_data_dir and os.path.exists(self.user_data_dir):
             try:
-                shutil.rmtree(self.user_data_dir, ignore_errors=True)
+                shutil.rmtree(self.user_data_dir)
                 self.logger.info(f"已删除临时用户数据目录: {self.user_data_dir}")
             except Exception as e:
-                self.logger.warning(f"删除临时目录失败: {e}")
+                self.logger.warning(f"删除临时目录失败: {e}",exc_info=True)
         self.user_data_dir = None
 

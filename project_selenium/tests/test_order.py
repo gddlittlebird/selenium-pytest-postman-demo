@@ -1,14 +1,20 @@
 import pytest
 import time
 import allure
+import os
+
+
 from utils.csv_reader import load_csv_data
 from pages.login_page import LoginPage
-from pages.order_page import ForecastPage
+from pages.order_page import OrderPage
+from utils.config_manager import ConfigManager
 
 
 @pytest.mark.usefixtures("browser")
 class TestOrder:
 
+    @allure.feature("订单模块")
+    @allure.story("创建订单")
     @pytest.mark.parametrize("user", load_csv_data("users.csv"))
     def test_create_order(self, user):
         """
@@ -21,12 +27,20 @@ class TestOrder:
         login_page.login_with_credentials(user["username"], user["password"])
         login_elapsed = time.time() - start_time
 
-        assert login_page.is_welcome_shown(user["username"]) is True
-        print(f"用户 {user['username']} 登录耗时: {login_elapsed:.2f}秒")
+        # 判断是否登录成功
+        login_ok = login_page.is_welcome_shown(user["username"])
+        if login_ok:
+            print(f"用户 {user['username']} 登录成功,耗时: {login_elapsed:.2f}秒")
+        else:
+            print(f"用户 {user['username']} 登录失败,耗时: {login_elapsed:.2f}秒")
+            assert False, f"用户 {user['username']} 登录失败"
 
         # 2. 创建预报单
-        order_page = ForecastPage(self.driver)
-        file_path = r"D:\project_selenium_improve\tests\16箱.xlsx"
+        order_page = OrderPage(self.driver)
+
+        # 3. 上传文件
+        project_dir = ConfigManager.get_project_dir()
+        file_path = os.path.join(project_dir, "tests", "16箱.xlsx")
 
         start_time = time.time()
         order_page.create_order(
@@ -39,4 +53,7 @@ class TestOrder:
 
         # 这里可以加断言，例如检查保存成功的提示
         # assert order_page.is_order_saved_successfully()
+
+if __name__ == '__main__':
+    pytest.main(["-s", "-v", "--browser=chrome", "tests/test_order.py"])
 

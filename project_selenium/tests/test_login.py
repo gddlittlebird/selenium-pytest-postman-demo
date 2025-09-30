@@ -3,6 +3,8 @@ import time
 import allure
 from utils.csv_reader import load_csv_data
 from pages.login_page import LoginPage
+
+
 #from core.browser_manager import BrowserManager
 
 
@@ -24,3 +26,6 @@ class TestLogin:
         assert login_page.is_welcome_shown(user["username"]) is True
 
         print(f"用户 {user['username']} 登录耗时: {elapsed:.2f}秒")
+
+if __name__ == "__main__":
+    pytest.main(["-s", "-v", "--browser=chrome", "tests/test_login.py"])

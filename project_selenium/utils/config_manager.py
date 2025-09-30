@@ -58,7 +58,7 @@ class ConfigManager:
         #截图目录
         self.screenshots_dir = os.path.join(self.project_dir, "screenshots")
         #日志目录
-        self.log_dir = os.path.join(self.project_dir,"log")
+        self.log_dir = os.path.join(self.project_dir,"logs")
 
         # 存储所有需要创建的目录
         self.directories = {
@@ -78,14 +78,14 @@ class ConfigManager:
         """
         创建程序运行所需要的所有目录(如果目录已经存在，会自动跳过)
         """
-        for name, path in self.directories.items():
+        for directory in self.directories.values():
             try:
-                os.makedirs(path, exist_ok=True)
-                self._log(f"目录已创建或已存在: {path}", level=logging.DEBUG)
+                os.makedirs(directory, exist_ok=True)
+                self._log(f"目录已创建或已存在: {directory}", level=logging.INFO)
             except OSError as e:
-                print(f"目录创建失败: {str(e)}", level=logging.CRITICAL)
+                self._log(f"目录创建失败: {str(e)}", level=logging.CRITICAL)
                 #RuntimeError 无特定分类，但运行中发现逻辑错误
-                raise RuntimeError(f"创建目录失败:{path}.信息错误：{e}")
+                raise RuntimeError(f"创建目录失败:{directory}.信息错误：{e}")
 
     def _init_logger(self):
         """
@@ -98,15 +98,21 @@ class ConfigManager:
 
             # 防止重复添加日志处理器
             if not self.logger.handlers:
-                formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+                # 创建一个日志处理器
                 file_handler = logging.FileHandler(log_file, encoding='utf-8')
+                # 设置日志格式
+                formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
                 file_handler.setFormatter(formatter)
 
                 self.logger.addHandler(file_handler)
                 self.logger.setLevel(logging.INFO)
 
+                # 日志系统初始化成功
+                self._log("日志系统初始化成功")
+
+                # 标记日志系统已经初始化
                 ConfigManager.logger_initialized = True
-                self._log("日志系统已初始化")
+
 
     def _load_config(self):
         """
@@ -129,10 +135,6 @@ class ConfigManager:
 
 
     def _log(self, message, level=logging.INFO):
-        """
-        封装日志记录方法，简化调用。
-        用于记录调试，警告，错误信息。
-        """
         self.logger.log(level, message)
 
     # ---------- 公共方法 ----------
