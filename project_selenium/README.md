@@ -24,6 +24,7 @@ project_selenium/
 ├── log/                       # 日志
 ├── screenshots/               # 截图
 ├── main.py                    # 可选，通常只做调试时使用
+├── run_tests.py               # 程序入口，运行tests
 ├── requirements.txt
 └── README.md                  # 写明依赖、执行命令、结构说明
 
@@ -32,10 +33,11 @@ project_selenium/
 
 
 ## 安装依赖
-	pip install -r requirements.txt
+pip install -r requirements.txt
 	
-	
-pytest test_login_performance.py --alluredir=reports/allure_results
+
+## 运行命令	
+pytest test_XXX.py --alluredir=reports/allure_results
 
 
 
